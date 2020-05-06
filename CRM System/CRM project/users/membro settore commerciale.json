@@ -1,0 +1,8 @@
+{
+	"host": "localhost",
+	"username": "membro_settore_commerciale",
+	"password": "membro_settore_commerciale",
+	"port": 3306,
+	"database": "CRM System DB"
+}
+
