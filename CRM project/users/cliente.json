@@ -3,5 +3,5 @@
 	"username": "cliente",
 	"password": "cliente",
 	"port": 3306,
-	"database": "CRM System DB"
+	"database": "crm_database"
 }

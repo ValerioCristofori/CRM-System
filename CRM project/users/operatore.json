@@ -3,6 +3,6 @@
 	"username": "operatore",
 	"password": "operatore",
 	"port": 3306,
-	"database": "CRM System DB"
+	"database": "crm_database"
 }
 

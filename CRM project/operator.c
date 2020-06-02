@@ -522,9 +522,47 @@ void add_accepted_proposal(MYSQL *conn){
 
 }
 
+void show_conversations(){
+	MYSQL *conn;
+	conn = connection_db();
+	MYSQL_STMT *prepared_stmt;
+	MYSQL_BIND param[1];
+	
+	
+	// Prepare stored procedure call
+	if(!setup_prepared_stmt(&prepared_stmt, "call visualizza_conversazioni(?)", conn)) {
+		finish_with_stmt_error(conn, prepared_stmt, "Unable to initialize operator statement\n", false);
+	}
+
+	// Prepare parameters
+	memset(param, 0, sizeof(param));
+
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer = cf;
+	param[0].buffer_length = strlen(cf);
+
+	if (mysql_stmt_bind_param(prepared_stmt, param) != 0) {
+		finish_with_stmt_error(conn, prepared_stmt, "Could not bind parameters for conversations report\n", true);
+	}
+
+	// Run procedure
+	if (mysql_stmt_execute(prepared_stmt) != 0) {
+		print_stmt_error(prepared_stmt, "An error occurred while retrieving the conversations report.");
+		goto out;
+	}
+	
+	// Dump the result set
+	dump_result_set(conn, prepared_stmt, "\nConversations");
+	
+	out:
+	mysql_stmt_close(prepared_stmt);
+	
+
+}
+
 void start_operator_view(MYSQL *conn){
 	
-	char options[9] = {'1','2','3','4','5','6','7','8','9'};
+	char options[10] = {'0', '1','2','3','4','5','6','7','8','9'};
 	char op;
 	
 	printf("Welcome in the system!\n");
@@ -542,42 +580,46 @@ void start_operator_view(MYSQL *conn){
 	while(1) {
 		
 		printf("*** What should I do for you? ***\n\n");
-		printf("1) Enter appointment\n");
-		printf("2) Show appointments\n");
-		printf("3) Enter conversation\n");
-		printf("4) Edit conversation note\n");
-		printf("5) Delete conversation note\n");
-		printf("6) Show clients list\n");
-		printf("7) Show client features\n");
-		printf("8) Enter accepted proposal\n");
+		printf("0) Enter appointment\n");
+		printf("1) Show appointments\n");
+		printf("2) Enter conversation\n");
+		printf("3) Edit conversation note\n");
+		printf("4) Delete conversation note\n");
+		printf("5) Show clients list\n");
+		printf("6) Show client features\n");
+		printf("7) Enter accepted proposal\n");
+		printf("8) Show your conversations\n");
 		printf("9) Quit\n");
 
-		op = multiChoice("Select an option", options, 9);
+		op = multiChoice("Select an option", options, 10);
 
 		switch(op) {
-			case '1':
+			case '0':
 				add_appointment(conn);
 				break;
-			case '2':
+			case '1':
 				show_appointments();
 				break;
-			case '3':
+			case '2':
 				add_conversation(conn);
 				break;
-			case '4':
+			case '3':
 				edit_note(conn);
 				break;
-			case '5':
+			case '4':
 				delete_note(conn);
 				break;
-			case '6':
+			case '5':
 				show_list();
 				break;
-			case '7':
+			case '6':
 				show_client_features();
 				break;
-			case '8':
+			case '7':
 				add_accepted_proposal(conn);
+				break;
+			case '8':
+				show_conversations();
 				break;
 			case '9':
 				printf("Exit\n");
