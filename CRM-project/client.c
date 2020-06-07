@@ -1,3 +1,9 @@
+/*
+ * 
+ ************** CLIENT MAIN ***************** 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,10 +26,11 @@ void show_phone_numbers(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
-	param[0].buffer = cf;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING; // IN
+	param[0].buffer = cf;  //use cf of the current user 
 	param[0].buffer_length = strlen(cf);
-
+	
+	// Bind parameters and store procedure
 	if (mysql_stmt_bind_param(prepared_stmt, param) != 0) {
 		finish_with_stmt_error(conn, prepared_stmt, "Could not bind parameters for phone number\n", true);
 	}
@@ -61,7 +68,7 @@ void show_accepted_proposals(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
@@ -101,7 +108,7 @@ void show_client(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
@@ -129,7 +136,7 @@ void show_client(){
 }
 
 void start_client_view(MYSQL *conn){
-	
+	// Client main
 	char options[2] = {'1','2'};
 	char op;
 	
@@ -146,6 +153,7 @@ void start_client_view(MYSQL *conn){
 	}
 	printf("\033[2J\033[H");
 	while(1) {
+		printf("********** CLIENT VIEW **********\n\n");
 		printf("*** What should I do for you? ***\n\n");
 		printf("1) Show my features\n");
 		printf("2) Quit\n");
@@ -153,14 +161,12 @@ void start_client_view(MYSQL *conn){
 		op = multiChoice("Select an option", options, 2);
 
 		switch(op) {
-			case '1':
-				
+			case '1':				
 				show_client();
 				show_phone_numbers();
 				show_accepted_proposals();
 				break;
 			case '2':
-				printf("Exit\n");
 				return;
 		
 				

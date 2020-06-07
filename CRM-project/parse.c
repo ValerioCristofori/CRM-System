@@ -1,3 +1,11 @@
+/*
+ * 
+ ************** PARSER ***************** 
+ * 
+ * provide the parsing 
+ * of a right formuled .json
+ */
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,9 @@
+/*
+ * 
+ ************** COMMERCIAL SECTOR MEMBER MAIN ***************** 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,43 +61,43 @@ void add_client( MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = name;
 	param[1].buffer_length = strlen(name);
 
-	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[2].buffer = surname;
 	param[2].buffer_length = strlen(surname);
 
-	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[3].buffer = email;
 	param[3].buffer_length = strlen(email);
 	
-	param[4].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[4].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[4].buffer = address;
 	param[4].buffer_length = strlen(address);
 	
-	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[5].buffer = fax;
 	param[5].buffer_length = strlen(fax);
 	
-	param[6].buffer_type = MYSQL_TYPE_DATE; 
+	param[6].buffer_type = MYSQL_TYPE_DATE; 		//IN
 	param[6].buffer = &date;
 	param[6].buffer_length = sizeof(date);
 	
-	param[7].buffer_type = MYSQL_TYPE_LONG; 
+	param[7].buffer_type = MYSQL_TYPE_LONG; 		//IN
 	param[7].buffer = &num_phone;
 	param[7].buffer_length = sizeof(num_phone);
 	
-	param[8].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[8].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[8].buffer = cf_operator;
 	param[8].buffer_length = strlen(cf_operator);
 		
-	param[9].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[9].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[9].buffer = cf;
 	param[9].buffer_length = strlen(cf);
 	
@@ -170,51 +176,51 @@ void add_company_client( MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = name;
 	param[1].buffer_length = strlen(name);
 
-	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[2].buffer = surname;
 	param[2].buffer_length = strlen(surname);
 
-	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[3].buffer = email;
 	param[3].buffer_length = strlen(email);
 	
-	param[4].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[4].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[4].buffer = address;
 	param[4].buffer_length = strlen(address);
 	
-	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[5].buffer = fax;
 	param[5].buffer_length = strlen(fax);
 	
-	param[6].buffer_type = MYSQL_TYPE_DATE; 
+	param[6].buffer_type = MYSQL_TYPE_DATE; 		//IN
 	param[6].buffer = &date;
 	param[6].buffer_length = sizeof(date);
 	
-	param[7].buffer_type = MYSQL_TYPE_LONG; 
+	param[7].buffer_type = MYSQL_TYPE_LONG; 		//IN
 	param[7].buffer = &num_phone;
 	param[7].buffer_length = sizeof(num_phone);
 	
-	param[8].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[8].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[8].buffer = iva;
 	param[8].buffer_length = strlen(iva);
 	
-	param[9].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[9].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[9].buffer = company_name;
 	param[9].buffer_length = strlen(company_name);
 	
-	param[10].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[10].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[10].buffer = cf_operator;
 	param[10].buffer_length = strlen(cf_operator);
 		
-	param[11].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[11].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[11].buffer = cf;
 	param[11].buffer_length = strlen(cf);
 	
@@ -253,7 +259,7 @@ void start_member_view(MYSQL *conn){
 	}
 	printf("\033[2J\033[H");
 	while(1) {
-		
+		printf("********** COMMERCIAL SECTOR MEMBER VIEW **********\n\n");
 		printf("*** What should I do for you? ***\n\n");
 		printf("1) Add new client\n");
 		printf("2) Add new company contact\n");
@@ -269,7 +275,6 @@ void start_member_view(MYSQL *conn){
 				add_company_client(conn);
 				break;
 			case '3':
-				printf("Exit\n");
 				return;
 		
 				

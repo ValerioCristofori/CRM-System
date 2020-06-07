@@ -1,3 +1,8 @@
+/*
+ * 
+ ************** DEFINES ***************** 
+ * 
+ */
 #pragma once
 
 #include <mysql.h>
@@ -10,23 +15,21 @@ struct configuration{
 	char *database;	
 	char password[45];
 };
-extern char cf[16];
-extern struct configuration conf;
+extern char 					cf[16];		/*codice fiscale of the current user*/
+extern struct configuration 	conf;		
 
 
-extern MYSQL* connection_db();
-extern int parse_config(char *path, struct configuration *conf);
-extern char *getInput(unsigned int lung, char *stringa, bool hide);
-extern bool setup_prepared_stmt(MYSQL_STMT **stmt, char *statement, MYSQL *conn);
-extern void print_error (MYSQL *conn, char *message);
-extern void print_stmt_error (MYSQL_STMT *stmt, char *message);
-extern char multiChoice(char *domanda, char choices[], int num);
-extern void dump_result_set(MYSQL *conn, MYSQL_STMT *stmt, char *title);
-
-extern void finish_with_error(MYSQL *conn, char *message);
-extern void finish_with_stmt_error(MYSQL *conn, MYSQL_STMT *stmt, char *message, bool close_stmt);
-
-extern void start_client_view(MYSQL *conn);
-extern void start_operator_view(MYSQL *conn);
-extern void start_manager_view(MYSQL *conn);
-extern void start_member_view(MYSQL *conn);
+extern MYSQL* 		connection_db();														/*provide connection to the db*/
+extern int 			parse_config(char *path, struct configuration *conf);					/*parse a .json, take username, pass, port, db*/
+extern char*		getInput(unsigned int lung, char *stringa, bool hide);					/*provide a safe scan of strings with upperbound lung  */
+extern char 		multiChoice(char *domanda, char choices[], int num);					/*provide the choice in the gui*/
+extern bool 		setup_prepared_stmt(MYSQL_STMT **stmt, char *statement, MYSQL *conn); 	/*setup MYSQL_STMT struct*/
+extern void 		print_error (MYSQL *conn, char *message);								/*print error message for the connection  */
+extern void 		print_stmt_error (MYSQL_STMT *stmt, char *message);						/*print error message for the statement  */
+extern void 		dump_result_set(MYSQL *conn, MYSQL_STMT *stmt, char *title);  			/*print with the right measure the output of a select call*/
+extern void 		finish_with_error(MYSQL *conn, char *message);							/*exit the process after a error in the connection   */
+extern void 		finish_with_stmt_error(MYSQL *conn, MYSQL_STMT *stmt, char *message, bool close_stmt);		/*exit the process after a error in the statement   */
+extern void 		start_client_view(MYSQL *conn);			/* run with client's privileges */
+extern void 		start_operator_view(MYSQL *conn);		/* run with operator's privileges */
+extern void 		start_manager_view(MYSQL *conn);		/* run with manager's privileges */
+extern void 		start_member_view(MYSQL *conn);			/* run with commercial sector member's privileges */

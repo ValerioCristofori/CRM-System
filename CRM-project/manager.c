@@ -1,3 +1,9 @@
+/*
+ * 
+ ************** MANAGER MAIN ***************** 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +19,6 @@ void add_operator(MYSQL *conn){
 	char name[45];
 	char surname[45];
 	
-	printf("%s", cf);
 	//Get paramenters
 	printf("\nOperator CF: ");
 	getInput(16, cf_operator, false);
@@ -30,20 +35,20 @@ void add_operator(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_operator;
 	param[0].buffer_length = strlen(cf_operator);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = name;
 	param[1].buffer_length = strlen(name);
 
-	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[2].buffer = surname;
 	param[2].buffer_length = strlen(surname);
 	
-	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 
-	param[3].buffer = cf;
+	param[3].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
+	param[3].buffer = cf; //cf of the current user --> manager
 	param[3].buffer_length = strlen(cf);
 
 	if (mysql_stmt_bind_param(prepared_stmt, param) != 0) {
@@ -84,15 +89,15 @@ void add_proposal(MYSQL *conn){
 	
 	memset(param, 0, sizeof(param));
 	
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = code;
 	param[0].buffer_length = strlen(code);
 	
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = description;
 	param[1].buffer_length = strlen(description);
 
-	param[2].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[2].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[2].buffer = cf;
 	param[2].buffer_length = strlen(cf);
 	
@@ -130,11 +135,11 @@ void archive_proposal(MYSQL *conn){
 	
 	memset(param, 0, sizeof(param));
 	
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = code;
 	param[0].buffer_length = strlen(code);
 	
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = cf;
 	param[1].buffer_length = strlen(cf);
 	
@@ -174,6 +179,7 @@ void start_manager_view(MYSQL *conn){
 	}
 	printf("\033[2J\033[H");
 	while(1) {
+		printf("********** MANAGER VIEW *********\n\n");
 		printf("*** What should I do for you? ***\n\n");
 		printf("1) Add new operator\n");
 		printf("2) Add new business proposal\n");
@@ -193,7 +199,6 @@ void start_manager_view(MYSQL *conn){
 				archive_proposal(conn);
 				break;
 			case '4':
-				printf("Exit\n");
 				return;
 		
 				

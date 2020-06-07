@@ -1,16 +1,16 @@
 cose da fare:
-1- mettere comando show conversation
 
-2- modificare conversation in db --> chiave : ( cliente, operatore, num in autoincrement ) 
 
-3- ad 'appuntamento' inserire il campo proposta commerciale di cui si parlera nell'incontro
 
-4- rispetta la regola aziendale
+
+
+
+
 
 5- controlla il print di errori non compromettenti 
 
-6- commentare i procedimenti nei diagrammi E-R
+
 
 7- [motivare la scelta di fare un entità(inserimento cliente) e ridondare cf cliente -→altrimenti molto sspesso prendo 	dati che non mi servono] [motivare la scelta di fare un entità e ridondare cf cliente -→altrimenti molto sspesso prendo 	dati che non mi servono] 
 
-8- stesso di 7 per relazione gestione
+

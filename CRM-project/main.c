@@ -1,3 +1,9 @@
+/*
+ * 
+ ************** MAIN ***************** 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -14,17 +20,17 @@ typedef enum {
 	FAILED_LOGIN
 } role_t;
 
-struct configuration conf;
-char cf[16];
-
-static MYSQL *conn;
+struct configuration 	conf; 		//struct for config of db
+char 					cf[16]; 	//codice fiscale of the running user
+static MYSQL 			*conn;		//struct fot connection to db 
 
 
 static role_t attempt_login(MYSQL *conn, char *cf, char *password) {
-	MYSQL_STMT *login_procedure;
+	MYSQL_STMT *login_procedure;		
 	
-	MYSQL_BIND param[3]; // Used both for input and output
+	MYSQL_BIND param[3]; 				//Used both for input and output
 	int role = 0;
+	// Prepare the statement avoid injection
 	if(!setup_prepared_stmt(&login_procedure, "call login(?, ?, ?)", conn)) {
 		print_stmt_error(login_procedure, "Unable to initialize login statement\n");
 		goto err2;
@@ -33,20 +39,20 @@ static role_t attempt_login(MYSQL *conn, char *cf, char *password) {
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 	
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING; // IN
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING; 	// IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING; // IN
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING; 	// IN
 	param[1].buffer = password;
 	param[1].buffer_length = strlen(password);
 
-	param[2].buffer_type = MYSQL_TYPE_LONG; // OUT
+	param[2].buffer_type = MYSQL_TYPE_LONG; 		// OUT
 	param[2].buffer = &role;
 	param[2].buffer_length = sizeof(role);
 
 
-
+	// Bind the parameters with the procedure
 	if (mysql_stmt_bind_param(login_procedure, param) != 0) { // Note _param
 		print_stmt_error(login_procedure, "Could not bind parameters for login");
 		goto err;
@@ -91,7 +97,7 @@ static role_t attempt_login(MYSQL *conn, char *cf, char *password) {
 int main(void)
 {
 	role_t role;
-	
+	// Parse the .json file for take info for db config
 	if(!parse_config("users/login.json", &conf)) {
 		fprintf(stderr, "Unable to load login configuration\n");
 		exit(EXIT_FAILURE);
@@ -102,18 +108,18 @@ int main(void)
 		fprintf (stderr, "mysql_init() failed \n");
 		exit(EXIT_FAILURE);
 	}
-	
+	// Connect with config parameters to the db
 	if (mysql_real_connect(conn, conf.host, conf.db_username, conf.db_password, conf.database, conf.port, NULL, CLIENT_MULTI_STATEMENTS | CLIENT_MULTI_RESULTS) == NULL) {
 		fprintf (stderr, "mysql_real_connect() failed\n");
 		mysql_close (conn);
 		exit(EXIT_FAILURE);
 	}
-	
-	printf("Fiscal code: ");
-	getInput(45, cf, false);
+	// Take login data from input
+	printf("Codice fiscale: ");
+	getInput(16, cf, false);
 	printf("Password: ");
 	getInput(45, conf.password, true);
-
+	// Switch through the role 
 	role = attempt_login(conn, cf, conf.password);
 	switch(role) {
 		case CLIENT:
@@ -141,10 +147,11 @@ int main(void)
 			fprintf(stderr, "Invalid condition at %s:%d\n", __FILE__, __LINE__);
 			abort();
 	}
+	printf("Exiting from the app...\n");
 
-	printf("Bye!\n");
-
+	// Close the db connection 
 	mysql_close (conn);
+	
 	return 0;
 	
 }

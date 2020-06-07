@@ -1,3 +1,9 @@
+/*
+ * 
+ ************** OPERATOR MAIN ***************** 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,7 +33,7 @@ void add_appointment(MYSQL *conn){
 	printf("\nNumber sala: ");
 	scanf("%d", &num_sala);
 	
-	bzero(&date, sizeof(MYSQL_TIME));
+	bzero(&date, sizeof(MYSQL_TIME));	//init struct MYSQL_TIME
 	date.time_type = MYSQL_TYPE_DATETIME;
 	
 	printf("\nDate: \n");
@@ -54,28 +60,28 @@ void add_appointment(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_LONG;
+	param[0].buffer_type = MYSQL_TYPE_LONG;		 	//IN
 	param[0].buffer = &num_sala;
 	param[0].buffer_length = sizeof(num_sala);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = address;
 	param[1].buffer_length = strlen(address);
 
-	param[2].buffer_type = MYSQL_TYPE_DATETIME;
+	param[2].buffer_type = MYSQL_TYPE_DATETIME;		//IN
 	param[2].buffer = (char *)&date;
 	param[2].buffer_length = sizeof(date);
 	param[2].is_null=0;
 	
-	param[3].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[3].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[3].buffer = cf_client;
 	param[3].buffer_length = strlen(cf_client);
 
-	param[4].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[4].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[4].buffer = cf;
 	param[4].buffer_length = strlen(cf);
 
-	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 
+	param[5].buffer_type = MYSQL_TYPE_VAR_STRING; 	//IN
 	param[5].buffer = codice_proposta;
 	param[5].buffer_length = strlen(codice_proposta);
 
@@ -111,7 +117,7 @@ void show_appointments(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
@@ -159,15 +165,15 @@ void add_conversation(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = cf;
 	param[1].buffer_length = strlen(cf);
 
-	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[2].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[2].buffer = note;
 	param[2].buffer_length = strlen(note);
 
@@ -216,19 +222,19 @@ void edit_note(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = cf;
 	param[1].buffer_length = strlen(cf);
 	
-	param[2].buffer_type = MYSQL_TYPE_LONG;
+	param[2].buffer_type = MYSQL_TYPE_LONG;			//IN
 	param[2].buffer = &num;
 	param[2].buffer_length = sizeof(num);
 	
-	param[3].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[3].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[3].buffer = note;
 	param[3].buffer_length = strlen(note);
 
@@ -274,15 +280,15 @@ void delete_note(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
-	param[1].buffer = cf;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
+	param[1].buffer = cf;	
 	param[1].buffer_length = strlen(cf);
 	
-	param[2].buffer_type = MYSQL_TYPE_LONG;
+	param[2].buffer_type = MYSQL_TYPE_LONG;			//IN
 	param[2].buffer = &num;
 	param[2].buffer_length = sizeof(num);
 
@@ -320,7 +326,7 @@ void show_list(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
@@ -360,7 +366,7 @@ void get_phone(char *cf_client){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
@@ -401,10 +407,9 @@ void get_proposals(char *cf_client){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
-
 	if (mysql_stmt_bind_param(prepared_stmt, param) != 0) {
 		finish_with_stmt_error(conn, prepared_stmt, "Could not bind parameters for accepted proposals\n", true);
 	}
@@ -444,7 +449,7 @@ void show_client_features(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
@@ -479,8 +484,8 @@ void add_accepted_proposal(MYSQL *conn){
 	
 	
 	//Get paramenters
-	printf("\nClient's CF : ");
-	getInput(45, cf_client, false);
+	printf("\nClient CF: ");
+	getInput(16, cf_client, false);
 	printf("\nProposal code: \n");
 	getInput(45, proposal_code, false);
 
@@ -493,11 +498,11 @@ void add_accepted_proposal(MYSQL *conn){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf_client;
 	param[0].buffer_length = strlen(cf_client);
 
-	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[1].buffer = proposal_code;
 	param[1].buffer_length = strlen(proposal_code);
 
@@ -522,6 +527,58 @@ void add_accepted_proposal(MYSQL *conn){
 
 }
 
+
+void add_managment(MYSQL *conn){
+	MYSQL_STMT *prepared_stmt;
+	MYSQL_BIND param[2];
+	
+	
+	char cf_client[16];
+	
+	
+	//Get paramenters
+	printf("\nClient CF: ");
+	getInput(16, cf_client, false);
+
+
+	
+	// Prepare stored procedure call
+	if(!setup_prepared_stmt(&prepared_stmt, "call inserisci_gestione_cliente(?, ?)", conn)) {
+		finish_with_stmt_error(conn, prepared_stmt, "Unable to initialize managment insertion statement\n", false);
+	}
+
+	// Prepare parameters
+	memset(param, 0, sizeof(param));
+
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
+	param[0].buffer = cf_client;
+	param[0].buffer_length = strlen(cf_client);
+
+	param[1].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
+	param[1].buffer = cf;
+	param[1].buffer_length = strlen(cf);
+
+	
+
+
+
+	if (mysql_stmt_bind_param(prepared_stmt, param) != 0) {
+		finish_with_stmt_error(conn, prepared_stmt, "Could not bind parameters for managment insertion\n", true);
+	}
+
+	// Run procedure
+	if (mysql_stmt_execute(prepared_stmt) != 0) {
+		print_stmt_error(prepared_stmt, "An error occurred while adding the managment.");
+		goto out;
+	}
+
+	printf("Managment with %s correctly added!\n", cf_client);
+
+    out:
+	mysql_stmt_close(prepared_stmt);
+}
+
+
 void show_conversations(){
 	MYSQL *conn;
 	conn = connection_db();
@@ -537,7 +594,7 @@ void show_conversations(){
 	// Prepare parameters
 	memset(param, 0, sizeof(param));
 
-	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;
+	param[0].buffer_type = MYSQL_TYPE_VAR_STRING;	//IN
 	param[0].buffer = cf;
 	param[0].buffer_length = strlen(cf);
 
@@ -562,7 +619,7 @@ void show_conversations(){
 
 void start_operator_view(MYSQL *conn){
 	
-	char options[10] = {'0', '1','2','3','4','5','6','7','8','9'};
+	char options[11] = {'0', '1','2','3','4','5','6','7','8','9','a'};
 	char op;
 	
 	printf("Welcome in the system!\n");
@@ -578,7 +635,7 @@ void start_operator_view(MYSQL *conn){
 	}
 	printf("\033[2J\033[H");
 	while(1) {
-		
+		printf("********* OPERATOR VIEW *********\n\n");
 		printf("*** What should I do for you? ***\n\n");
 		printf("0) Enter appointment\n");
 		printf("1) Show appointments\n");
@@ -589,9 +646,10 @@ void start_operator_view(MYSQL *conn){
 		printf("6) Show client features\n");
 		printf("7) Enter accepted proposal\n");
 		printf("8) Show your conversations\n");
-		printf("9) Quit\n");
+		printf("9) Enter client's managment\n");
+		printf("a) Quit\n");
 
-		op = multiChoice("Select an option", options, 10);
+		op = multiChoice("Select an option", options, 11);
 
 		switch(op) {
 			case '0':
@@ -622,7 +680,9 @@ void start_operator_view(MYSQL *conn){
 				show_conversations();
 				break;
 			case '9':
-				printf("Exit\n");
+				add_managment(conn);
+				break;
+			case 'a':
 				return;
 		
 				

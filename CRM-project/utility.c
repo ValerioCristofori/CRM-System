@@ -1,3 +1,11 @@
+/*
+ * 
+ ************** UTILITY ***************** 
+ * 	
+ * here there're implemented some useful
+ * functions for the app	
+ */
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +43,7 @@ MYSQL* connection_db(){
 	return conn;
 }
 
+
 void print_stmt_error (MYSQL_STMT *stmt, char *message)
 {
 	fprintf (stderr, "%s\n", message);
@@ -45,6 +54,7 @@ void print_stmt_error (MYSQL_STMT *stmt, char *message)
 			mysql_stmt_error (stmt));
 	}
 }
+
 
 void print_error(MYSQL *conn, char *message)
 {
@@ -60,6 +70,7 @@ void print_error(MYSQL *conn, char *message)
 	}
 }
 
+
 char *getInput(unsigned int lung, char *stringa, bool hide)
 {
 	char c;
@@ -69,7 +80,7 @@ char *getInput(unsigned int lung, char *stringa, bool hide)
 	sigaction_t sa, savealrm, saveint, savehup, savequit, saveterm;
 	sigaction_t savetstp, savettin, savettou;
 	struct termios term, oterm;
-
+	
 	if(hide) {
 		// Svuota il buffer
 		(void) fflush(stdout);
@@ -100,6 +111,7 @@ char *getInput(unsigned int lung, char *stringa, bool hide)
 	
 	// Acquisisce da tastiera al più lung - 1 caratteri
 	for(i = 0; i < lung; i++) {
+		
 		(void) fread(&c, sizeof(char), 1, stdin);
 		if(c == '\n') {
 			stringa[i] = '\0';
@@ -114,6 +126,15 @@ char *getInput(unsigned int lung, char *stringa, bool hide)
 			else
 				(void) write(fileno(stdout), "*", sizeof(char));
 		}
+		
+		
+	}
+
+	if( strlen(stringa) == 0){
+			printf("Att: non sono consentiti valori nulli!\nInserisci di nuovo: ");
+			getInput(lung, stringa, hide);
+			return stringa;
+		
 	}
 	
 	// Controlla che il terminatore di stringa sia stato inserito
@@ -153,6 +174,7 @@ char *getInput(unsigned int lung, char *stringa, bool hide)
 	return stringa;
 }
 
+
 //Per preparare i prepared statement
 bool setup_prepared_stmt(MYSQL_STMT **stmt, char *statement, MYSQL *conn)
 {
@@ -175,10 +197,12 @@ bool setup_prepared_stmt(MYSQL_STMT **stmt, char *statement, MYSQL *conn)
 	return true;
 }
 
+
 // Per la gestione dei segnali
 static void handler(int s) {
 	signo = s;
 }
+
 
 char multiChoice(char *domanda, char choices[], int num)
 {
@@ -208,12 +232,14 @@ char multiChoice(char *domanda, char choices[], int num)
 	}
 }
 
+
 void finish_with_error(MYSQL *conn, char *message)
 {
 	print_error(conn, message);
 	mysql_close(conn);
 	exit(EXIT_FAILURE);        
 }
+
 
 void finish_with_stmt_error(MYSQL *conn, MYSQL_STMT *stmt, char *message, bool close_stmt)
 {
@@ -222,6 +248,7 @@ void finish_with_stmt_error(MYSQL *conn, MYSQL_STMT *stmt, char *message, bool c
 	mysql_close(conn);
 	exit(EXIT_FAILURE);        
 }
+
 
 static void print_dashes(MYSQL_RES *res_set)
 {
@@ -238,6 +265,7 @@ static void print_dashes(MYSQL_RES *res_set)
 	}
 	putchar('\n');
 }
+
 
 static void dump_result_set_header(MYSQL_RES *res_set)
 {
@@ -273,11 +301,12 @@ static void dump_result_set_header(MYSQL_RES *res_set)
 	print_dashes(res_set);
 }
 
+
 void dump_result_set(MYSQL *conn, MYSQL_STMT *stmt, char *title)
 {
 	int i;
 	int status;
-	int num_fields;       /* number of columns in result */
+	int num_fields;  	  /* number of columns in result */
 	MYSQL_FIELD *fields;  /* for result set metadata */
 	MYSQL_BIND *rs_bind;  /* for output buffers */
 	MYSQL_RES *rs_metadata;
@@ -395,8 +424,7 @@ void dump_result_set(MYSQL *conn, MYSQL_STMT *stmt, char *title)
 						date = (MYSQL_TIME *)rs_bind[i].buffer;
 						
 						printf("        %d-%02d-%02d    %02d:%02d:%02d        |", date->year, date->month, date->day, date->hour, date->minute, date->second);
-			
-						//printf(" %-*s |", (int)fields[i].max_length, (char*)rs_bind[i].buffer);
+
 						break;
 				       
 				    case MYSQL_TYPE_TIME:
